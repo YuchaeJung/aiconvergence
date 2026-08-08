@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>회원가입 — AICIA</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/styles.css" />
+
+<style>
+  .tiers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .tier {
+    padding: 40px 32px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+  }
+  .tier.featured {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .tier .badge {
+    position: absolute;
+    top: -10px; left: 32px;
+    height: 22px;
+    padding: 0 10px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    display: grid; place-items: center;
+    letter-spacing: 0.04em;
+  }
+  .tier .lvl {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+  .tier.featured .lvl { color: rgba(255,255,255,0.6); }
+  .tier .nm {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .tier .price {
+    font-family: var(--font-display);
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .tier .price .unit { font-size: 15px; color: var(--ink-4); font-weight: 400; margin-left: 6px; }
+  .tier.featured .price .unit { color: rgba(255,255,255,0.6); }
+  .tier ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; border-top: 1px solid var(--line); padding-top: 24px; }
+  .tier.featured ul { border-top-color: rgba(255,255,255,0.15); }
+  .tier li { font-size: 14.5px; padding-left: 24px; position: relative; color: var(--ink-2); line-height: 1.5; }
+  .tier.featured li { color: rgba(255,255,255,0.9); }
+  .tier li::before {
+    content: ""; position: absolute; left: 0; top: 8px;
+    width: 12px; height: 12px;
+    background: no-repeat center/contain url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  }
+  .tier.featured li::before {
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+  }
+  .tier .btn { margin-top: auto; justify-content: center; }
+  .tier.featured .btn-outline { border-color: rgba(255,255,255,0.3); color: #fff; }
+  .tier.featured .btn-outline:hover { background: rgba(255,255,255,0.1); }
+
+  .process {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    counter-reset: step;
+  }
+  .step {
+    padding: 32px 24px;
+    border-left: 1px solid var(--line);
+    position: relative;
+  }
+  .step:first-child { border-left: 0; }
+  .step .n {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    margin-bottom: 16px;
+  }
+  .step h4 { font-size: 17px; margin-bottom: 10px; letter-spacing: -0.015em; }
+  .step p { font-size: 14px; color: var(--ink-3); line-height: 1.55; }
+
+  .form-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    background: var(--bg-soft);
+    padding: 80px;
+    border-radius: var(--radius-lg);
+    align-items: start;
+  }
+  .form-wrap h2 { font-size: clamp(32px, 3.4vw, 44px); }
+  .form-wrap .lead { margin-top: 20px; }
+  .form-wrap .contact {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+    font-size: 14px;
+    color: var(--ink-3);
+    line-height: 1.8;
+  }
+  .form-wrap .contact strong { color: var(--ink); font-weight: 600; display: block; margin-bottom: 6px; }
+
+  .form { display: flex; flex-direction: column; gap: 20px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    color: var(--ink-3);
+    text-transform: uppercase;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
+    background: #fff;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    transition: border-color 0.15s;
+  }
+  .field textarea { height: auto; padding: 12px 14px; min-height: 100px; resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: 0;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 15%, transparent);
+  }
+  .form .actions { display: flex; gap: 12px; margin-top: 8px; align-items: center; }
+  .form .note { font-size: 12px; color: var(--ink-4); }
+
+  @media (max-width: 960px) {
+    .tiers { grid-template-columns: 1fr; }
+    .process { grid-template-columns: 1fr; }
+    .step { border-left: 0; border-top: 1px solid var(--line); }
+    .step:first-child { border-top: 0; }
+    .form-wrap { grid-template-columns: 1fr; padding: 32px; gap: 40px; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  window.__TWEAK_DEFAULTS__ = /*EDITMODE-BEGIN*/{
+    "palette": "blue",
+    "font": "pretendard"
+  }/*EDITMODE-END*/;
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="AICIA Homepage.html">
+      <span class="brand-mark">AI</span>
+      <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+      <span class="brand-name-en" data-lang="kr">AICIA</span>
+    </a>
+    <div class="nav-menu">
+      <a href="about.html"><span data-lang="kr">협회소개</span><span data-lang="en">About</span></a>
+      <a href="AICIA Homepage.html#business"><span data-lang="kr">사업분야</span><span data-lang="en">Business</span></a>
+      <a href="AICIA Homepage.html#members"><span data-lang="kr">회원사</span><span data-lang="en">Members</span></a>
+      <a href="insights.html"><span data-lang="kr">인사이트</span><span data-lang="en">Insights</span></a>
+      <a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a>
+      <a href="AICIA Homepage.html#news"><span data-lang="kr">뉴스</span><span data-lang="en">News</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-set-lang="kr" class="active">KR</button>
+        <button data-set-lang="en">EN</button>
+      </div>
+      <a href="join.html" class="btn btn-primary btn-sm active">
+        <span data-lang="kr">회원가입</span><span data-lang="en">Join</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section class="subhero">
+  <div class="container">
+    <div class="eyebrow">Membership</div>
+    <h1 data-lang="kr">AI 산업의 다음 장을,<br/>회원사로서 함께 씁니다.</h1>
+    <h1 data-lang="en">Help write Korea's<br/>next AI chapter.</h1>
+    <p class="lead" data-lang="kr">
+      AICIA 회원사는 정책 형성, R&D 매칭, 인재 확보, 글로벌 진출까지 —
+      다른 곳에서 얻을 수 없는 산업 인프라에 접근합니다.
+    </p>
+    <p class="lead" data-lang="en">
+      Members get access to policy influence, R&D matching, hiring, and
+      global reach — the industry infrastructure you can't buy elsewhere.
+    </p>
+  </div>
+</section>
+
+<section class="section" id="benefits">
+  <div class="container">
+    <div class="section-title" style="margin-bottom:60px;">
+      <div class="eyebrow">Tiers</div>
+      <h2 style="margin-top:20px;" data-lang="kr">회원 등급</h2>
+      <h2 style="margin-top:20px;" data-lang="en">Membership tiers</h2>
+      <p class="lead" style="margin-top:20px;" data-lang="kr">기업 규모와 참여 목적에 맞춰 세 가지 회원 등급을 운영합니다.</p>
+      <p class="lead" style="margin-top:20px;" data-lang="en">Three tiers, scaled to your organization and goals.</p>
+    </div>
+
+    <div class="tiers">
+      <div class="tier">
+        <div class="lvl">Associate</div>
+        <div class="nm" data-lang="kr">일반 회원</div><div class="nm" data-lang="en">Associate</div>
+        <div class="price">₩1,200,000<span class="unit" data-lang="kr">/년</span><span class="unit" data-lang="en">/yr</span></div>
+        <ul>
+          <li data-lang="kr">모든 조찬포럼·세미나 참여</li>
+          <li data-lang="en">Access to all forums and seminars</li>
+          <li data-lang="kr">회원사 디렉토리 등재</li>
+          <li data-lang="en">Listed in member directory</li>
+          <li data-lang="kr">산업 리포트·정책 브리프 수신</li>
+          <li data-lang="en">Reports and policy briefs</li>
+          <li data-lang="kr">교육 프로그램 30% 할인</li>
+          <li data-lang="en">30% off training programs</li>
+        </ul>
+        <a href="#apply" class="btn btn-outline">
+          <span data-lang="kr">신청하기</span><span data-lang="en">Apply</span>
+        </a>
+      </div>
+
+      <div class="tier featured">
+        <div class="badge" data-lang="kr">가장 인기</div>
+        <div class="badge" data-lang="en">Most popular</div>
+        <div class="lvl">Corporate</div>
+        <div class="nm" data-lang="kr">기업 회원</div><div class="nm" data-lang="en">Corporate</div>
+        <div class="price">₩4,800,000<span class="unit" data-lang="kr">/년</span><span class="unit" data-lang="en">/yr</span></div>
+        <ul>
+          <li data-lang="kr">일반 회원 혜택 전부 포함</li>
+          <li data-lang="en">Everything in Associate</li>
+          <li data-lang="kr">정책 워킹그룹 참여</li>
+          <li data-lang="en">Seat in policy working groups</li>
+          <li data-lang="kr">회원사 우선 매칭 · 파트너십</li>
+          <li data-lang="en">Priority matchmaking and partnerships</li>
+          <li data-lang="kr">공동 R&D 사업 우선 참여권</li>
+          <li data-lang="en">Priority in joint R&D programs</li>
+          <li data-lang="kr">채용 플랫폼·잡페어 참여</li>
+          <li data-lang="en">Hiring platform and job fair</li>
+          <li data-lang="kr">글로벌 미션 참여 (연 2회)</li>
+          <li data-lang="en">Global missions (2× per year)</li>
+        </ul>
+        <a href="#apply" class="btn btn-outline">
+          <span data-lang="kr">신청하기</span><span data-lang="en">Apply</span>
+        </a>
+      </div>
+
+      <div class="tier">
+        <div class="lvl">Founding</div>
+        <div class="nm" data-lang="kr">창립 회원</div><div class="nm" data-lang="en">Founding</div>
+        <div class="price" data-lang="kr" style="font-size:22px;">별도 협의</div>
+        <div class="price" data-lang="en" style="font-size:22px;">By invitation</div>
+        <ul>
+          <li data-lang="kr">기업 회원 혜택 전부 포함</li>
+          <li data-lang="en">Everything in Corporate</li>
+          <li data-lang="kr">이사회 참여 자격</li>
+          <li data-lang="en">Board eligibility</li>
+          <li data-lang="kr">협회 주관 사업 공동 기획</li>
+          <li data-lang="en">Co-design of association programs</li>
+          <li data-lang="kr">정부 협력 사업 대표성</li>
+          <li data-lang="en">Representation in government programs</li>
+        </ul>
+        <a href="mailto:hello@aicia.or.kr" class="btn btn-outline">
+          <span data-lang="kr">문의하기</span><span data-lang="en">Contact us</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="section-title" style="margin-bottom:40px;">
+      <div class="eyebrow">Process</div>
+      <h2 style="margin-top:20px;" data-lang="kr">가입 절차</h2>
+      <h2 style="margin-top:20px;" data-lang="en">How to join</h2>
+    </div>
+    <div class="process" style="border-top:1px solid var(--line); border-bottom: 1px solid var(--line);">
+      <div class="step">
+        <div class="n">STEP 01</div>
+        <h4 data-lang="kr">신청서 제출</h4><h4 data-lang="en">Submit application</h4>
+        <p data-lang="kr">아래 신청 폼 또는 이메일로 회사 소개서를 함께 제출합니다.</p>
+        <p data-lang="en">Fill out the form below or email us with a company profile.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 02</div>
+        <h4 data-lang="kr">사무국 확인</h4><h4 data-lang="en">Secretariat review</h4>
+        <p data-lang="kr">담당자가 3영업일 내 연락드립니다.</p>
+        <p data-lang="en">We respond within 3 business days.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 03</div>
+        <h4 data-lang="kr">이사회 승인</h4><h4 data-lang="en">Board approval</h4>
+        <p data-lang="kr">정기 이사회(분기별)에서 신규 회원사 안건이 다뤄집니다.</p>
+        <p data-lang="en">Quarterly board reviews new member applications.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 04</div>
+        <h4 data-lang="kr">회비 납부 & 온보딩</h4><h4 data-lang="en">Payment & onboarding</h4>
+        <p data-lang="kr">회비 납부 후 회원사 계정과 오리엔테이션이 시작됩니다.</p>
+        <p data-lang="en">After payment, we activate your account and onboarding.</p>
+      </div>
+      <div class="step">
+        <div class="n">STEP 05</div>
+        <h4 data-lang="kr">활동 시작</h4><h4 data-lang="en">Get to work</h4>
+        <p data-lang="kr">첫 조찬포럼과 워킹그룹 초대 메일이 발송됩니다.</p>
+        <p data-lang="en">First forum invitation and WG assignment arrive.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="apply" style="padding-top:40px;">
+  <div class="container">
+    <div class="form-wrap">
+      <div>
+        <div class="eyebrow">Apply</div>
+        <h2 style="margin-top:20px;" data-lang="kr">신청 폼</h2>
+        <h2 style="margin-top:20px;" data-lang="en">Application form</h2>
+        <p class="lead" data-lang="kr">아래 정보를 남겨주시면 사무국이 확인 후 3영업일 내 연락드립니다.</p>
+        <p class="lead" data-lang="en">Leave your details and our secretariat will follow up within 3 business days.</p>
+        <div class="contact">
+          <strong data-lang="kr">직접 문의</strong>
+          <strong data-lang="en">Direct contact</strong>
+          hello@aicia.or.kr<br/>
+          +82 2 6265 8750<br/>
+          <span data-lang="kr">서울특별시 서초구 태봉로 108<br/>서울 AI 허브 4층 405호</span>
+          <span data-lang="en">108 Taebong-ro, Seocho-gu<br/>Seoul AI Hub, 4F, Rm 405</span>
+        </div>
+      </div>
+
+      <form class="form" onsubmit="event.preventDefault(); alert('신청이 접수되었습니다. 감사합니다.'); this.reset();">
+        <div class="form-row">
+          <div class="field">
+            <label data-lang="kr">회사명</label><label data-lang="en">Company</label>
+            <input required placeholder="예: 뤼튼테크놀로지스" />
+          </div>
+          <div class="field">
+            <label data-lang="kr">사업자등록번호</label><label data-lang="en">Business no.</label>
+            <input placeholder="123-45-67890" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label data-lang="kr">담당자 성함</label><label data-lang="en">Contact name</label>
+            <input required placeholder="홍길동" />
+          </div>
+          <div class="field">
+            <label data-lang="kr">직책</label><label data-lang="en">Role</label>
+            <input placeholder="CEO, CTO, 사업개발팀장 등" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label data-lang="kr">이메일</label><label data-lang="en">Email</label>
+            <input type="email" required placeholder="name@company.com" />
+          </div>
+          <div class="field">
+            <label data-lang="kr">연락처</label><label data-lang="en">Phone</label>
+            <input placeholder="+82 10-1234-5678" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label data-lang="kr">희망 등급</label><label data-lang="en">Desired tier</label>
+            <select>
+              <option>Associate (일반)</option>
+              <option selected>Corporate (기업)</option>
+              <option>Founding (창립 · 초대제)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label data-lang="kr">주요 사업 영역</label><label data-lang="en">Business area</label>
+            <select>
+              <option>Foundation Model / LLM</option>
+              <option>AI Silicon / 반도체</option>
+              <option>Enterprise AI</option>
+              <option>AI + 제조</option>
+              <option>AI + 금융</option>
+              <option>AI + 의료</option>
+              <option>Consumer AI</option>
+              <option>기타</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label data-lang="kr">간단 소개</label><label data-lang="en">Brief introduction</label>
+          <textarea placeholder="회사와 가입 목적을 간단히 소개해 주세요."></textarea>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-accent" type="submit">
+            <span data-lang="kr">가입 신청 제출</span><span data-lang="en">Submit application</span>
+            <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+          <span class="note" data-lang="kr">* 개인정보는 회원 심사 목적으로만 사용됩니다.</span>
+          <span class="note" data-lang="en">* Data used only for membership review.</span>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">AI</span>
+          <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+        </div>
+        <p data-lang="kr">AI융합산업협회(AICIA)는 대한민국의 인공지능 산업을 대표하는 비영리 산업 단체입니다.</p>
+        <p data-lang="en">AICIA is the non-profit trade association representing Korea's AI industry.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Association</h5>
+        <ul>
+          <li><a href="about.html"><span data-lang="kr">협회 소개</span><span data-lang="en">About</span></a></li>
+          <li><a href="about.html#history"><span data-lang="kr">연혁</span><span data-lang="en">History</span></a></li>
+          <li><a href="about.html#board"><span data-lang="kr">임원진</span><span data-lang="en">Board</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="AICIA Homepage.html#business"><span data-lang="kr">사업 분야</span><span data-lang="en">Business</span></a></li>
+          <li><a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a></li>
+          <li><a href="insights.html"><span data-lang="kr">리포트</span><span data-lang="en">Reports</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li>서울특별시 서초구 태봉로 108</li>
+          <li>서울 AI 허브 4층 405호</li>
+          <li>+82 2 6265 8750</li>
+          <li>hello@aicia.or.kr</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2017–2026 AI융합산업협회 · AICIA</div>
+      <div style="display:flex;gap:20px;"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="tweaks-btn">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+  Tweaks
+</button>
+<div class="tweaks-panel">
+  <button class="close">✕</button>
+  <h5>Tweaks</h5>
+  <div class="sub">컬러 팔레트와 폰트를 조절해 보세요.</div>
+  <div class="row">
+    <div class="label">Color palette</div>
+    <div class="swatches">
+      <button class="swatch" data-tweak-palette="blue" style="background:#2563eb"></button>
+      <button class="swatch" data-tweak-palette="indigo" style="background:#4f46e5"></button>
+      <button class="swatch" data-tweak-palette="teal" style="background:#0d9488"></button>
+      <button class="swatch" data-tweak-palette="graphite" style="background:#334155"></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Typography</div>
+    <div class="fonts">
+      <button class="fchip" data-tweak-font="pretendard" style="font-family:'Pretendard',sans-serif">Pretendard · 모던 산세리프</button>
+      <button class="fchip" data-tweak-font="ibm" style="font-family:'IBM Plex Sans KR',sans-serif">IBM Plex · 테크니컬</button>
+      <button class="fchip" data-tweak-font="serif" style="font-family:'Noto Serif KR',serif">Noto Serif · 클래식</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>

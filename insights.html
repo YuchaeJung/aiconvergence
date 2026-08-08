@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>인사이트 — AICIA</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/styles.css" />
+
+<style>
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+  .chip {
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    font-size: 13px;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .chip:hover { border-color: var(--ink); }
+  .chip.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .featured-report {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    padding: 48px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius-lg);
+    align-items: center;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured-report .glow {
+    position: absolute;
+    top: -100px; right: -100px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, color-mix(in oklch, var(--accent) 60%, transparent), transparent 70%);
+    filter: blur(60px);
+  }
+  .featured-report .body { position: relative; }
+  .featured-report .tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: color-mix(in oklch, var(--accent) 85%, white 15%);
+    margin-bottom: 20px;
+  }
+  .featured-report h2 { color: #fff; font-size: clamp(28px, 3.2vw, 44px); }
+  .featured-report p { color: rgba(255,255,255,0.7); margin-top: 20px; font-size: 16px; }
+  .featured-report .stats { margin-top: 32px; display: flex; gap: 40px; }
+  .featured-report .stat .n { font-size: 28px; font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; }
+  .featured-report .stat .l { font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+  .featured-report .cover {
+    aspect-ratio: 3/4;
+    background: linear-gradient(160deg, color-mix(in oklch, var(--accent) 60%, black 40%), color-mix(in oklch, var(--accent) 30%, black 70%));
+    border-radius: var(--radius);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .featured-report .cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .featured-report .cover .cv-eyebrow { position: relative; font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.7); letter-spacing: 0.12em; text-transform: uppercase; }
+  .featured-report .cover .cv-title { position: relative; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: #fff; margin-top: 12px; }
+  .featured-report .cover .cv-year { position: relative; font-family: var(--font-display); font-size: 72px; font-weight: 500; letter-spacing: -0.03em; color: color-mix(in oklch, var(--accent) 80%, white 20%); }
+
+  .reports-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .report {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: #fff;
+    transition: all 0.2s;
+  }
+  .report:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .report .cover {
+    aspect-ratio: 4/3;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    color: #fff;
+    overflow: hidden;
+  }
+  .report .cover::before {
+    content: "";
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  .report .cover.c1 { background: linear-gradient(160deg, #1e3a8a, #0f172a); }
+  .report .cover.c2 { background: linear-gradient(160deg, #164e63, #083344); }
+  .report .cover.c3 { background: linear-gradient(160deg, #3730a3, #1e1b4b); }
+  .report .cover.c4 { background: linear-gradient(160deg, #7c2d12, #431407); }
+  .report .cover.c5 { background: linear-gradient(160deg, #14532d, #052e16); }
+  .report .cover.c6 { background: linear-gradient(160deg, #6b21a8, #2e1065); }
+  .report .cv-tag { position: relative; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.75; }
+  .report .cv-title { position: relative; font-size: 22px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.2; }
+  .report .body {
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .report h4 { font-size: 16px; line-height: 1.4; letter-spacing: -0.01em; }
+  .report .desc { font-size: 14px; color: var(--ink-3); line-height: 1.55; }
+  .report .foot {
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--ink-4);
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+
+  .subscribe {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    padding: 60px;
+    background: var(--bg-soft);
+    border-radius: var(--radius-lg);
+  }
+  .subscribe h3 { font-size: clamp(24px, 2.6vw, 34px); }
+  .subscribe .lead { margin-top: 16px; font-size: 15.5px; }
+  .subscribe-form { display: flex; gap: 8px; }
+  .subscribe-form input {
+    flex: 1;
+    height: 52px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    background: #fff;
+    font-size: 15px;
+    font-family: inherit;
+  }
+  .subscribe-form input:focus { outline: 0; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 15%, transparent); }
+  .subscribe-form .btn { height: 52px; }
+
+  @media (max-width: 960px) {
+    .featured-report { grid-template-columns: 1fr; padding: 32px; }
+    .reports-grid { grid-template-columns: 1fr; }
+    .subscribe { grid-template-columns: 1fr; padding: 32px; gap: 32px; }
+  }
+</style>
+
+<script>
+  window.__TWEAK_DEFAULTS__ = /*EDITMODE-BEGIN*/{
+    "palette": "blue",
+    "font": "pretendard"
+  }/*EDITMODE-END*/;
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="AICIA Homepage.html">
+      <span class="brand-mark">AI</span>
+      <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+      <span class="brand-name-en" data-lang="kr">AICIA</span>
+    </a>
+    <div class="nav-menu">
+      <a href="about.html"><span data-lang="kr">협회소개</span><span data-lang="en">About</span></a>
+      <a href="AICIA Homepage.html#business"><span data-lang="kr">사업분야</span><span data-lang="en">Business</span></a>
+      <a href="AICIA Homepage.html#members"><span data-lang="kr">회원사</span><span data-lang="en">Members</span></a>
+      <a href="insights.html" class="active"><span data-lang="kr">인사이트</span><span data-lang="en">Insights</span></a>
+      <a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a>
+      <a href="AICIA Homepage.html#news"><span data-lang="kr">뉴스</span><span data-lang="en">News</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-set-lang="kr" class="active">KR</button>
+        <button data-set-lang="en">EN</button>
+      </div>
+      <a href="join.html" class="btn btn-primary btn-sm">
+        <span data-lang="kr">회원가입</span><span data-lang="en">Join</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section class="subhero">
+  <div class="container">
+    <div class="eyebrow">Insights</div>
+    <h1 data-lang="kr">현장이 만든<br/>산업 지식.</h1>
+    <h1 data-lang="en">Industry knowledge,<br/>built in the field.</h1>
+    <p class="lead" data-lang="kr">
+      AICIA의 리포트와 브리프는 회원사의 실제 도입 데이터, 정책 협상 기록,
+      국내외 시장 조사로 만들어집니다. 리서치 회사 자료와 다른, 산업 협회
+      고유의 관점을 만나보세요.
+    </p>
+    <p class="lead" data-lang="en">
+      AICIA publications are built from members' real deployment data,
+      policy-negotiation records, and market research — a trade association
+      perspective you can't get from analysts alone.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="filter-bar">
+      <button class="chip active"><span data-lang="kr">전체</span><span data-lang="en">All</span></button>
+      <button class="chip"><span data-lang="kr">연간 리포트</span><span data-lang="en">Annual</span></button>
+      <button class="chip"><span data-lang="kr">정책 브리프</span><span data-lang="en">Policy</span></button>
+      <button class="chip"><span data-lang="kr">시장 분석</span><span data-lang="en">Market</span></button>
+      <button class="chip"><span data-lang="kr">현장 케이스</span><span data-lang="en">Case study</span></button>
+      <button class="chip"><span data-lang="kr">표준 · 안전</span><span data-lang="en">Standards</span></button>
+    </div>
+
+    <div class="featured-report">
+      <div class="glow"></div>
+      <div class="body">
+        <div class="tag">Featured · Annual Report 2026</div>
+        <h2 data-lang="kr">대한민국 AI 산업<br/>지형도 2026</h2>
+        <h2 data-lang="en">Korea AI Industry<br/>Map 2026</h2>
+        <p data-lang="kr">
+          312개 회원사 심층 설문, 정부 공개 데이터, 12개 산업 하위섹션
+          분석. 파운데이션 모델부터 AI 반도체, 응용 서비스, 전통산업 융합까지
+          가장 완결된 국내 AI 산업 지형도.
+        </p>
+        <p data-lang="en">
+          312-member deep survey, government open data, and 12 sub-sector
+          analyses — the most complete Korea AI industry map from foundation
+          models through silicon and applied services.
+        </p>
+        <div class="stats">
+          <div class="stat">
+            <div class="n">92p</div>
+            <div class="l" data-lang="kr">전체 페이지</div><div class="l" data-lang="en">Pages</div>
+          </div>
+          <div class="stat">
+            <div class="n">312</div>
+            <div class="l" data-lang="kr">응답 기업</div><div class="l" data-lang="en">Respondents</div>
+          </div>
+          <div class="stat">
+            <div class="n">14</div>
+            <div class="l" data-lang="kr">차트</div><div class="l" data-lang="en">Datasets</div>
+          </div>
+        </div>
+        <div style="margin-top:36px; display:flex; gap:12px; flex-wrap:wrap;">
+          <a href="#" class="btn" style="background:#fff; color:var(--ink);">
+            <span data-lang="kr">PDF 다운로드</span><span data-lang="en">Download PDF</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v14m0 0l-5-5m5 5l5-5M5 21h14"/></svg>
+          </a>
+          <a href="#" class="btn btn-outline" style="border-color:rgba(255,255,255,0.3); color:#fff;">
+            <span data-lang="kr">요약 브리프</span><span data-lang="en">Executive brief</span>
+          </a>
+        </div>
+      </div>
+      <div class="cover">
+        <div>
+          <div class="cv-eyebrow">AICIA · Annual Report</div>
+          <div class="cv-title" data-lang="kr">Korea AI Industry Map</div>
+          <div class="cv-title" data-lang="en">Korea AI Industry Map</div>
+        </div>
+        <div class="cv-year">'26</div>
+      </div>
+    </div>
+
+    <div class="reports-grid">
+      <a class="report" href="#">
+        <div class="cover c2">
+          <div class="cv-tag">Policy Brief · 07/2026</div>
+          <div class="cv-title" data-lang="kr">AI기본법 시행령,<br/>8가지 쟁점</div>
+          <div class="cv-title" data-lang="en">AI Framework Act:<br/>8 Concerns</div>
+        </div>
+        <div class="body">
+          <div class="foot"><span>PDF · 24p</span><span>2026.07</span></div>
+        </div>
+      </a>
+      <a class="report" href="#">
+        <div class="cover c3">
+          <div class="cv-tag">Market Analysis · 05/2026</div>
+          <div class="cv-title" data-lang="kr">국내 파운데이션<br/>모델 시장</div>
+          <div class="cv-title" data-lang="en">Foundation Model<br/>Market</div>
+        </div>
+        <div class="body">
+          <div class="foot"><span>PDF · 46p</span><span>2026.05</span></div>
+        </div>
+      </a>
+      <a class="report" href="#">
+        <div class="cover c5">
+          <div class="cv-tag">Case Study · 04/2026</div>
+          <div class="cv-title" data-lang="kr">제조 AI 도입<br/>ROI 12선</div>
+          <div class="cv-title" data-lang="en">Manufacturing AI:<br/>12 ROI Cases</div>
+        </div>
+        <div class="body">
+          <div class="foot"><span>PDF · 38p</span><span>2026.04</span></div>
+        </div>
+      </a>
+      <a class="report" href="#">
+        <div class="cover c6">
+          <div class="cv-tag">Standards · 03/2026</div>
+          <div class="cv-title" data-lang="kr">AI 안전 평가<br/>가이드라인 v2</div>
+          <div class="cv-title" data-lang="en">AI Safety<br/>Guidelines v2</div>
+        </div>
+        <div class="body">
+          <div class="foot"><span>PDF · 52p</span><span>2026.03</span></div>
+        </div>
+      </a>
+      <a class="report" href="#">
+        <div class="cover c4">
+          <div class="cv-tag">Policy Brief · 02/2026</div>
+          <div class="cv-title" data-lang="kr">AI 인재 수급<br/>2025 결산</div>
+          <div class="cv-title" data-lang="en">AI Talent<br/>Supply 2025</div>
+        </div>
+        <div class="body">
+          <div class="foot"><span>PDF · 18p</span><span>2026.02</span></div>
+        </div>
+      </a>
+      <a class="report" href="#">
+        <div class="cover c1">
+          <div class="cv-tag">Market Analysis · 01/2026</div>
+          <div class="cv-title" data-lang="kr">AI 반도체<br/>Kor Report 2026</div>
+          <div class="cv-title" data-lang="en">AI Silicon Korea<br/>Report 2026</div>
+        </div>
+        <div class="body">
+          <div class="foot"><span>PDF · 60p</span><span>2026.01</span></div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="container">
+    <div class="subscribe">
+      <div>
+        <div class="eyebrow">Newsletter</div>
+        <h3 style="margin-top:16px;" data-lang="kr">AICIA 인사이트, 매월 1회.</h3>
+        <h3 style="margin-top:16px;" data-lang="en">Monthly AICIA Insight.</h3>
+        <p class="lead" data-lang="kr">최신 리포트, 정책 동향, 회원사 소식을 매월 첫 주 화요일 이메일로 보내드립니다.</p>
+        <p class="lead" data-lang="en">Reports, policy movements, and member news — first Tuesday, every month.</p>
+      </div>
+      <form class="subscribe-form" onsubmit="event.preventDefault(); alert('구독 완료!'); this.reset();">
+        <input type="email" required placeholder="name@company.com" />
+        <button class="btn btn-primary" type="submit">
+          <span data-lang="kr">구독</span><span data-lang="en">Subscribe</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">AI</span>
+          <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+        </div>
+        <p data-lang="kr">AI융합산업협회(AICIA)는 대한민국의 인공지능 산업을 대표하는 비영리 산업 단체입니다.</p>
+        <p data-lang="en">AICIA is the non-profit trade association representing Korea's AI industry.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Association</h5>
+        <ul>
+          <li><a href="about.html"><span data-lang="kr">협회 소개</span><span data-lang="en">About</span></a></li>
+          <li><a href="about.html#history"><span data-lang="kr">연혁</span><span data-lang="en">History</span></a></li>
+          <li><a href="about.html#board"><span data-lang="kr">임원진</span><span data-lang="en">Board</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="AICIA Homepage.html#business"><span data-lang="kr">사업 분야</span><span data-lang="en">Business</span></a></li>
+          <li><a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a></li>
+          <li><a href="insights.html"><span data-lang="kr">리포트</span><span data-lang="en">Reports</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li>서울특별시 서초구 태봉로 108</li>
+          <li>서울 AI 허브 4층 405호</li>
+          <li>+82 2 6265 8750</li>
+          <li>hello@aicia.or.kr</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2017–2026 AI융합산업협회 · AICIA</div>
+      <div style="display:flex;gap:20px;"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="tweaks-btn">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+  Tweaks
+</button>
+<div class="tweaks-panel">
+  <button class="close">✕</button>
+  <h5>Tweaks</h5>
+  <div class="sub">컬러 팔레트와 폰트를 조절해 보세요.</div>
+  <div class="row">
+    <div class="label">Color palette</div>
+    <div class="swatches">
+      <button class="swatch" data-tweak-palette="blue" style="background:#2563eb"></button>
+      <button class="swatch" data-tweak-palette="indigo" style="background:#4f46e5"></button>
+      <button class="swatch" data-tweak-palette="teal" style="background:#0d9488"></button>
+      <button class="swatch" data-tweak-palette="graphite" style="background:#334155"></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Typography</div>
+    <div class="fonts">
+      <button class="fchip" data-tweak-font="pretendard" style="font-family:'Pretendard',sans-serif">Pretendard · 모던 산세리프</button>
+      <button class="fchip" data-tweak-font="ibm" style="font-family:'IBM Plex Sans KR',sans-serif">IBM Plex · 테크니컬</button>
+      <button class="fchip" data-tweak-font="serif" style="font-family:'Noto Serif KR',serif">Noto Serif · 클래식</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
