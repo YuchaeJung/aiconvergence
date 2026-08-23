@@ -1,0 +1,625 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>가입 신청 완료 — AICIA</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/styles.css" />
+
+<style>
+  .complete-hero {
+    padding: calc(var(--nav-h) + 100px) 0 80px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+  .complete-hero .glow {
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, color-mix(in oklch, var(--accent) 22%, transparent), transparent 70%);
+    filter: blur(50px);
+    pointer-events: none;
+  }
+  .complete-hero-inner { position: relative; text-align: left; max-width: 720px; }
+
+  .check-badge {
+    width: 72px; height: 72px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    display: grid; place-items: center;
+    margin-bottom: 36px;
+    box-shadow: 0 8px 24px -6px color-mix(in oklch, var(--accent) 50%, transparent);
+    animation: pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  }
+  @keyframes pop {
+    from { transform: scale(0.4); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .complete-hero h1 {
+    font-size: clamp(40px, 5vw, 68px);
+    text-wrap: balance;
+    max-width: 18ch;
+    margin-bottom: 24px;
+  }
+
+  .receipt {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 20px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: #fff;
+    margin-top: 32px;
+    box-shadow: var(--shadow-sm);
+  }
+  .receipt .lbl {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+  .receipt .num {
+    font-family: var(--font-mono);
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .receipt .copy-btn {
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .receipt .copy-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .receipt .copy-btn.copied { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .cta-row {
+    margin-top: 40px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .status-strip {
+    padding: 60px 0;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-soft);
+  }
+  .status-track {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    max-width: 960px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .status-track::before {
+    content: "";
+    position: absolute;
+    top: 22px; left: 10%; right: 10%;
+    height: 2px;
+    background: var(--line);
+    z-index: 0;
+  }
+  .status-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    padding: 0 8px;
+    z-index: 1;
+  }
+  .status-dot {
+    width: 44px; height: 44px;
+    border-radius: 999px;
+    background: #fff;
+    border: 2px solid var(--line);
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-4);
+    transition: all 0.2s;
+  }
+  .status-step.done .status-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+  .status-step.active .status-dot {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+    box-shadow: 0 0 0 6px color-mix(in oklch, var(--accent) 15%, transparent);
+  }
+  .status-step .l {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    letter-spacing: -0.01em;
+    line-height: 1.3;
+  }
+  .status-step.active .l { color: var(--ink); font-weight: 600; }
+  .status-step .sl {
+    font-size: 11px;
+    color: var(--ink-4);
+  }
+
+  .receipt-summary {
+    padding: 100px 0;
+  }
+  .receipt-summary .wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .kv {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .kv-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    gap: 20px;
+  }
+  .kv-row:last-child { border-bottom: 0; }
+  .kv-row .k {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+  }
+  .kv-row .v {
+    font-size: 15px;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    word-break: break-word;
+  }
+  .kv-row .v.mono { font-family: var(--font-mono); font-size: 14px; }
+  .kv-row .v.muted { color: var(--ink-3); font-size: 14px; }
+
+  .next-steps { display: flex; flex-direction: column; gap: 24px; }
+  .next-step {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    padding: 20px 0;
+    border-top: 1px solid var(--line);
+  }
+  .next-step:last-child { border-bottom: 1px solid var(--line); }
+  .next-step .n {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    padding-top: 2px;
+  }
+  .next-step h4 { font-size: 16px; margin-bottom: 6px; letter-spacing: -0.015em; }
+  .next-step p { font-size: 14px; color: var(--ink-3); line-height: 1.55; }
+
+  .not-found {
+    padding: calc(var(--nav-h) + 120px) 0 120px;
+    text-align: center;
+  }
+  .not-found h1 { font-size: clamp(28px, 3vw, 40px); margin-bottom: 16px; }
+  .not-found p { color: var(--ink-3); max-width: 46ch; margin: 0 auto 32px; }
+
+  @media (max-width: 960px) {
+    .receipt-summary .wrap { grid-template-columns: 1fr; gap: 32px; }
+    .status-track { grid-template-columns: 1fr 1fr 1fr; gap: 20px 8px; }
+    .status-track::before { display: none; }
+    .kv-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 16px; }
+  }
+</style>
+
+<script>
+  window.__TWEAK_DEFAULTS__ = /*EDITMODE-BEGIN*/{
+    "palette": "blue",
+    "font": "pretendard"
+  }/*EDITMODE-END*/;
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="AICIA Homepage.html">
+      <span class="brand-mark">AI</span>
+      <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+      <span class="brand-name-en" data-lang="kr">AICIA</span>
+    </a>
+    <div class="nav-menu">
+      <a href="about.html"><span data-lang="kr">협회소개</span><span data-lang="en">About</span></a>
+      <a href="AICIA Homepage.html#business"><span data-lang="kr">사업분야</span><span data-lang="en">Business</span></a>
+      <a href="AICIA Homepage.html#members"><span data-lang="kr">회원사</span><span data-lang="en">Members</span></a>
+      <a href="insights.html"><span data-lang="kr">인사이트</span><span data-lang="en">Insights</span></a>
+      <a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a>
+      <a href="AICIA Homepage.html#news"><span data-lang="kr">뉴스</span><span data-lang="en">News</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-set-lang="kr" class="active">KR</button>
+        <button data-set-lang="en">EN</button>
+      </div>
+      <a href="join.html" class="btn btn-primary btn-sm">
+        <span data-lang="kr">회원가입</span><span data-lang="en">Join</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Success view -->
+<div data-view="success" hidden>
+  <section class="complete-hero">
+    <div class="glow"></div>
+    <div class="container complete-hero-inner">
+      <div class="check-badge">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="eyebrow">Application received</div>
+      <h1 style="margin-top:20px;" data-lang="kr">가입 신청이<br/>접수되었습니다.</h1>
+      <h1 style="margin-top:20px;" data-lang="en">Your application<br/>has been received.</h1>
+      <p class="lead" data-lang="kr">
+        AICIA 사무국이 접수 내용을 확인한 뒤, <strong>3영업일 이내</strong>
+        <span data-summary-email></span>로 회신드립니다. 아래 접수번호로 언제든 진행 상황을 조회하실 수 있습니다.
+      </p>
+      <p class="lead" data-lang="en">
+        The AICIA secretariat will review your submission and reply to
+        <strong data-summary-email></strong> within <strong>3 business days</strong>. Keep the
+        application number below for future reference.
+      </p>
+
+      <div class="receipt">
+        <div>
+          <div class="lbl" data-lang="kr">접수번호</div><div class="lbl" data-lang="en">Application no.</div>
+          <div class="num" data-summary-appno>—</div>
+        </div>
+        <button class="copy-btn" data-copy-btn type="button">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <span data-copy-label><span data-lang="kr">복사</span><span data-lang="en">Copy</span></span>
+        </button>
+      </div>
+
+      <div class="cta-row">
+        <a href="AICIA Homepage.html" class="btn btn-primary">
+          <span data-lang="kr">홈으로 돌아가기</span><span data-lang="en">Back to home</span>
+          <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+        <a href="insights.html" class="btn btn-outline">
+          <span data-lang="kr">최신 리포트 살펴보기</span><span data-lang="en">Browse latest reports</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="status-strip">
+    <div class="container">
+      <div class="status-track">
+        <div class="status-step done">
+          <div class="status-dot">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="l" data-lang="kr">신청 접수</div><div class="l" data-lang="en">Submitted</div>
+          <div class="sl" data-summary-date>—</div>
+        </div>
+        <div class="status-step active">
+          <div class="status-dot">02</div>
+          <div class="l" data-lang="kr">사무국 확인</div><div class="l" data-lang="en">Secretariat review</div>
+          <div class="sl" data-lang="kr">진행 중</div><div class="sl" data-lang="en">In progress</div>
+        </div>
+        <div class="status-step">
+          <div class="status-dot">03</div>
+          <div class="l" data-lang="kr">이사회 승인</div><div class="l" data-lang="en">Board approval</div>
+          <div class="sl" data-lang="kr">분기별</div><div class="sl" data-lang="en">Quarterly</div>
+        </div>
+        <div class="status-step">
+          <div class="status-dot">04</div>
+          <div class="l" data-lang="kr">회비 & 온보딩</div><div class="l" data-lang="en">Payment & onboarding</div>
+          <div class="sl">—</div>
+        </div>
+        <div class="status-step">
+          <div class="status-dot">05</div>
+          <div class="l" data-lang="kr">활동 시작</div><div class="l" data-lang="en">Get to work</div>
+          <div class="sl">—</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="receipt-summary">
+    <div class="container">
+      <div class="wrap">
+        <div>
+          <div class="eyebrow">Application summary</div>
+          <h2 style="margin-top:20px;font-size:clamp(28px, 3vw, 40px);" data-lang="kr">신청 내역</h2>
+          <h2 style="margin-top:20px;font-size:clamp(28px, 3vw, 40px);" data-lang="en">What you submitted</h2>
+          <p class="lead" style="margin-top:20px;" data-lang="kr">
+            아래 내역으로 접수되었습니다. 수정이 필요하시면
+            <a href="mailto:hello@aicia.or.kr" style="color:var(--accent);text-decoration:underline;">hello@aicia.or.kr</a>로 연락 주세요.
+          </p>
+          <p class="lead" style="margin-top:20px;" data-lang="en">
+            Submitted with the details below. Need a change? Email
+            <a href="mailto:hello@aicia.or.kr" style="color:var(--accent);text-decoration:underline;">hello@aicia.or.kr</a>.
+          </p>
+
+          <div class="kv" style="margin-top:32px;">
+            <div class="kv-row">
+              <div class="k" data-lang="kr">회사</div><div class="k" data-lang="en">Company</div>
+              <div class="v" data-summary-field="company">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">사업자번호</div><div class="k" data-lang="en">Business no.</div>
+              <div class="v mono" data-summary-field="bizNo">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">담당자</div><div class="k" data-lang="en">Contact</div>
+              <div class="v" data-summary-field="contactName">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">직책</div><div class="k" data-lang="en">Role</div>
+              <div class="v muted" data-summary-field="role">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">이메일</div><div class="k" data-lang="en">Email</div>
+              <div class="v mono" data-summary-field="email">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">연락처</div><div class="k" data-lang="en">Phone</div>
+              <div class="v mono" data-summary-field="phone">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">희망 등급</div><div class="k" data-lang="en">Tier</div>
+              <div class="v" data-summary-field="tier">—</div>
+            </div>
+            <div class="kv-row">
+              <div class="k" data-lang="kr">사업 영역</div><div class="k" data-lang="en">Business area</div>
+              <div class="v" data-summary-field="area">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="eyebrow">Next steps</div>
+          <h2 style="margin-top:20px;font-size:clamp(28px, 3vw, 40px);" data-lang="kr">앞으로의 절차</h2>
+          <h2 style="margin-top:20px;font-size:clamp(28px, 3vw, 40px);" data-lang="en">What happens next</h2>
+          <div class="next-steps" style="margin-top:32px;">
+            <div class="next-step">
+              <div class="n">01</div>
+              <div>
+                <h4 data-lang="kr">사무국 확인 (3영업일)</h4>
+                <h4 data-lang="en">Secretariat review (3 business days)</h4>
+                <p data-lang="kr">담당자가 접수 내용을 확인한 뒤 필요 시 추가 자료를 요청드립니다.</p>
+                <p data-lang="en">A coordinator will follow up if we need any additional materials.</p>
+              </div>
+            </div>
+            <div class="next-step">
+              <div class="n">02</div>
+              <div>
+                <h4 data-lang="kr">이사회 승인 (분기별 정기 이사회)</h4>
+                <h4 data-lang="en">Board approval (quarterly)</h4>
+                <p data-lang="kr">신규 회원사 안건이 다음 정기 이사회에서 다뤄집니다.</p>
+                <p data-lang="en">Your application is reviewed at the next quarterly board meeting.</p>
+              </div>
+            </div>
+            <div class="next-step">
+              <div class="n">03</div>
+              <div>
+                <h4 data-lang="kr">회비 납부 & 온보딩</h4>
+                <h4 data-lang="en">Payment & onboarding</h4>
+                <p data-lang="kr">승인 후 회비 청구서와 회원사 계정, 오리엔테이션 안내를 보내드립니다.</p>
+                <p data-lang="en">On approval you'll receive an invoice, your member account, and onboarding details.</p>
+              </div>
+            </div>
+            <div class="next-step">
+              <div class="n">04</div>
+              <div>
+                <h4 data-lang="kr">활동 시작</h4>
+                <h4 data-lang="en">Get to work</h4>
+                <p data-lang="kr">첫 조찬포럼과 워킹그룹 초대 메일이 발송됩니다.</p>
+                <p data-lang="en">First forum invitation and working-group assignment arrive.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Not-found view (no session, no ?no= param) -->
+<section class="not-found" data-view="not-found" hidden>
+  <div class="container">
+    <div class="eyebrow" style="justify-content:center;display:inline-flex;">No application found</div>
+    <h1 style="margin-top:20px;" data-lang="kr">조회된 신청이 없습니다.</h1>
+    <h1 style="margin-top:20px;" data-lang="en">No application found.</h1>
+    <p data-lang="kr">신청을 아직 접수하지 않으셨거나, 접수 정보가 저장된 브라우저가 다를 수 있습니다. 새로 신청하시거나 사무국으로 문의해 주세요.</p>
+    <p data-lang="en">You may not have submitted an application yet, or your browser data has changed. Start a new application or contact the secretariat.</p>
+    <div class="cta-row" style="justify-content:center; margin-top:32px;">
+      <a href="join.html" class="btn btn-accent">
+        <span data-lang="kr">가입 신청하기</span><span data-lang="en">Apply now</span>
+        <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="AICIA Homepage.html" class="btn btn-outline">
+        <span data-lang="kr">홈으로</span><span data-lang="en">Home</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">AI</span>
+          <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+        </div>
+        <p data-lang="kr">AI융합산업협회(AICIA)는 대한민국의 인공지능 산업을 대표하는 비영리 산업 단체입니다.</p>
+        <p data-lang="en">AICIA is the non-profit trade association representing Korea's AI industry.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Association</h5>
+        <ul>
+          <li><a href="about.html"><span data-lang="kr">협회 소개</span><span data-lang="en">About</span></a></li>
+          <li><a href="about.html#history"><span data-lang="kr">연혁</span><span data-lang="en">History</span></a></li>
+          <li><a href="about.html#board"><span data-lang="kr">임원진</span><span data-lang="en">Board</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="AICIA Homepage.html#business"><span data-lang="kr">사업 분야</span><span data-lang="en">Business</span></a></li>
+          <li><a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a></li>
+          <li><a href="insights.html"><span data-lang="kr">리포트</span><span data-lang="en">Reports</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li>서울특별시 서초구 태봉로 108</li>
+          <li>서울 AI 허브 4층 405호</li>
+          <li>+82 2 6265 8750</li>
+          <li>hello@aicia.or.kr</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2017–2026 AI융합산업협회 · AICIA</div>
+      <div style="display:flex;gap:20px;"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a></div>
+    </div>
+  </div>
+</footer>
+
+<button class="tweaks-btn">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+  Tweaks
+</button>
+<div class="tweaks-panel">
+  <button class="close">✕</button>
+  <h5>Tweaks</h5>
+  <div class="sub">컬러 팔레트와 폰트를 조절해 보세요.</div>
+  <div class="row">
+    <div class="label">Color palette</div>
+    <div class="swatches">
+      <button class="swatch" data-tweak-palette="blue" style="background:#2563eb"></button>
+      <button class="swatch" data-tweak-palette="indigo" style="background:#4f46e5"></button>
+      <button class="swatch" data-tweak-palette="teal" style="background:#0d9488"></button>
+      <button class="swatch" data-tweak-palette="graphite" style="background:#334155"></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Typography</div>
+    <div class="fonts">
+      <button class="fchip" data-tweak-font="pretendard" style="font-family:'Pretendard',sans-serif">Pretendard · 모던 산세리프</button>
+      <button class="fchip" data-tweak-font="ibm" style="font-family:'IBM Plex Sans KR',sans-serif">IBM Plex · 테크니컬</button>
+      <button class="fchip" data-tweak-font="serif" style="font-family:'Noto Serif KR',serif">Noto Serif · 클래식</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+  // Resolve which member record to show:
+  // 1) URL ?no=<applicationNo>  (link from form redirect)
+  // 2) Current session (browser-persisted)
+  const params = new URLSearchParams(location.search);
+  const requestedNo = params.get('no');
+  const members = window.AICIA.readMembers();
+  let record = null;
+  if (requestedNo) record = members.find((m) => m.applicationNo === requestedNo) || null;
+  if (!record) record = window.AICIA.currentMember();
+
+  const successView = document.querySelector('[data-view="success"]');
+  const notFoundView = document.querySelector('[data-view="not-found"]');
+
+  if (!record) {
+    notFoundView.hidden = false;
+    return;
+  }
+  successView.hidden = false;
+
+  // Fill in summary fields
+  const setText = (sel, val) => {
+    document.querySelectorAll(sel).forEach((el) => {
+      el.textContent = val || '—';
+    });
+  };
+  setText('[data-summary-appno]', record.applicationNo);
+  setText('[data-summary-email]', record.email);
+  setText('[data-summary-field="company"]', record.company);
+  setText('[data-summary-field="bizNo"]', record.bizNo);
+  setText('[data-summary-field="contactName"]', record.contactName);
+  setText('[data-summary-field="role"]', record.role);
+  setText('[data-summary-field="email"]', record.email);
+  setText('[data-summary-field="phone"]', record.phone);
+  setText('[data-summary-field="tier"]', record.tier);
+  setText('[data-summary-field="area"]', record.area);
+
+  // Format submission date
+  try {
+    const d = new Date(record.submittedAt);
+    const s = d.toLocaleString(document.body.classList.contains('lang-en') ? 'en-US' : 'ko-KR', {
+      year: 'numeric', month: 'short', day: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    });
+    setText('[data-summary-date]', s);
+  } catch (e) {}
+
+  // Copy button
+  const copyBtn = document.querySelector('[data-copy-btn]');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const isEn = document.body.classList.contains('lang-en');
+      navigator.clipboard.writeText(record.applicationNo).then(() => {
+        copyBtn.classList.add('copied');
+        const label = copyBtn.querySelector('[data-copy-label]');
+        const original = label.innerHTML;
+        label.textContent = isEn ? 'Copied' : '복사됨';
+        setTimeout(() => {
+          copyBtn.classList.remove('copied');
+          label.innerHTML = original;
+        }, 1600);
+      }).catch(() => {
+        // Fallback: select-and-copy
+        const range = document.createRange();
+        range.selectNodeContents(document.querySelector('[data-summary-appno]'));
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>

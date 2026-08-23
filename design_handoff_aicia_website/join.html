@@ -152,128 +152,8 @@
     border-color: var(--accent);
     box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 15%, transparent);
   }
-  .form .actions { display: flex; gap: 12px; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+  .form .actions { display: flex; gap: 12px; margin-top: 8px; align-items: center; }
   .form .note { font-size: 12px; color: var(--ink-4); }
-
-  /* Validation states */
-  .field-error {
-    display: none;
-    font-size: 12px;
-    color: #b91c1c;
-    letter-spacing: -0.005em;
-    margin-top: -2px;
-  }
-  .field.has-error input,
-  .field.has-error select,
-  .field.has-error textarea {
-    border-color: #dc2626;
-    background: #fef7f7;
-  }
-  .field.has-error input:focus,
-  .field.has-error select:focus,
-  .field.has-error textarea:focus {
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
-  }
-  .field.has-error .field-error { display: block; }
-
-  /* Consent checkbox */
-  .field.consent { flex-direction: column; }
-  .check { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 14px; color: var(--ink-2); line-height: 1.5; }
-  .check input[type="checkbox"] {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 18px; height: 18px;
-    border: 1.5px solid var(--line-strong);
-    border-radius: 5px;
-    background: #fff;
-    margin: 0;
-    padding: 0;
-    display: inline-grid;
-    place-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-  .check input[type="checkbox"]:checked {
-    background: var(--accent);
-    border-color: var(--accent);
-  }
-  .check input[type="checkbox"]:checked::after {
-    content: "";
-    width: 10px; height: 10px;
-    background: no-repeat center/contain url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
-  }
-  .check input[type="checkbox"]:focus-visible {
-    outline: 0;
-    box-shadow: 0 0 0 3px color-mix(in oklch, var(--accent) 20%, transparent);
-  }
-
-  /* Form alert (top-level errors like duplicate) */
-  .form-alert {
-    padding: 14px 16px;
-    border-radius: 10px;
-    background: #fef7f7;
-    border: 1px solid #fecaca;
-    color: #991b1b;
-    font-size: 14px;
-    line-height: 1.5;
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-  .form-alert.success {
-    background: var(--accent-soft);
-    border-color: color-mix(in oklch, var(--accent) 40%, transparent);
-    color: var(--accent-ink);
-  }
-
-  /* Signed-in banner */
-  .already-applied {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 20px;
-    margin-bottom: 24px;
-    border-radius: 12px;
-    background: var(--accent-soft);
-    border: 1px solid color-mix(in oklch, var(--accent) 25%, transparent);
-  }
-  .already-applied .ico {
-    width: 36px; height: 36px;
-    border-radius: 999px;
-    background: var(--accent);
-    color: #fff;
-    display: grid; place-items: center;
-    flex-shrink: 0;
-  }
-  .already-applied .ttl {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--accent-ink);
-    letter-spacing: -0.015em;
-  }
-  .already-applied .msub {
-    font-size: 13px;
-    color: var(--ink-3);
-    margin-top: 3px;
-  }
-  .already-applied code {
-    font-family: var(--font-mono);
-    font-size: 12px;
-    padding: 2px 6px;
-    background: rgba(255,255,255,0.6);
-    border-radius: 4px;
-    color: var(--accent-ink);
-  }
-  .already-applied .btn { flex-shrink: 0; margin-left: auto; }
-
-  /* Spinner */
-  [data-submit-btn] .spinner {
-    animation: spin 0.7s linear infinite;
-  }
-  [data-submit-btn][disabled] { opacity: 0.7; cursor: wait; }
-  @keyframes spin { to { transform: rotate(360deg); } }
 
   @media (max-width: 960px) {
     .tiers { grid-template-columns: 1fr; }
@@ -476,82 +356,52 @@
         </div>
       </div>
 
-      <div class="already-applied" data-signed-in-banner hidden>
-        <div class="ico">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
-        <div>
-          <div class="ttl" data-lang="kr">이미 가입 신청이 접수되어 있습니다.</div>
-          <div class="ttl" data-lang="en">You've already applied.</div>
-          <div class="msub">
-            <span data-lang="kr">접수번호</span><span data-lang="en">Application no.</span>
-            <code data-signed-in-app-no></code> ·
-            <span data-signed-in-company></span>
-          </div>
-        </div>
-        <a class="btn btn-sm btn-outline" href="join_complete.html">
-          <span data-lang="kr">신청 현황 보기</span><span data-lang="en">View status</span>
-        </a>
-      </div>
-
-      <form class="form" id="join-form" novalidate>
+      <form class="form" onsubmit="event.preventDefault(); alert('신청이 접수되었습니다. 감사합니다.'); this.reset();">
         <div class="form-row">
           <div class="field">
-            <label for="f-company" data-lang="kr">회사명</label>
-            <label for="f-company" data-lang="en">Company</label>
-            <input id="f-company" name="company" required minlength="2" maxlength="80" placeholder="예: 뤼튼테크놀로지스" autocomplete="organization" />
-            <span class="field-error" data-error-for="company"></span>
+            <label data-lang="kr">회사명</label><label data-lang="en">Company</label>
+            <input required placeholder="예: 뤼튼테크놀로지스" />
           </div>
           <div class="field">
-            <label for="f-bizNo" data-lang="kr">사업자등록번호</label>
-            <label for="f-bizNo" data-lang="en">Business no.</label>
-            <input id="f-bizNo" name="bizNo" placeholder="123-45-67890" pattern="^\d{3}-\d{2}-\d{5}$" />
-            <span class="field-error" data-error-for="bizNo"></span>
+            <label data-lang="kr">사업자등록번호</label><label data-lang="en">Business no.</label>
+            <input placeholder="123-45-67890" />
           </div>
         </div>
 
         <div class="form-row">
           <div class="field">
-            <label for="f-contactName" data-lang="kr">담당자 성함</label>
-            <label for="f-contactName" data-lang="en">Contact name</label>
-            <input id="f-contactName" name="contactName" required minlength="2" maxlength="40" placeholder="홍길동" autocomplete="name" />
-            <span class="field-error" data-error-for="contactName"></span>
+            <label data-lang="kr">담당자 성함</label><label data-lang="en">Contact name</label>
+            <input required placeholder="홍길동" />
           </div>
           <div class="field">
-            <label for="f-role" data-lang="kr">직책</label>
-            <label for="f-role" data-lang="en">Role</label>
-            <input id="f-role" name="role" placeholder="CEO, CTO, 사업개발팀장 등" autocomplete="organization-title" />
+            <label data-lang="kr">직책</label><label data-lang="en">Role</label>
+            <input placeholder="CEO, CTO, 사업개발팀장 등" />
           </div>
         </div>
 
         <div class="form-row">
           <div class="field">
-            <label for="f-email" data-lang="kr">이메일</label>
-            <label for="f-email" data-lang="en">Email</label>
-            <input id="f-email" name="email" type="email" required placeholder="name@company.com" autocomplete="email" />
-            <span class="field-error" data-error-for="email"></span>
+            <label data-lang="kr">이메일</label><label data-lang="en">Email</label>
+            <input type="email" required placeholder="name@company.com" />
           </div>
           <div class="field">
-            <label for="f-phone" data-lang="kr">연락처</label>
-            <label for="f-phone" data-lang="en">Phone</label>
-            <input id="f-phone" name="phone" placeholder="+82 10-1234-5678" autocomplete="tel" />
+            <label data-lang="kr">연락처</label><label data-lang="en">Phone</label>
+            <input placeholder="+82 10-1234-5678" />
           </div>
         </div>
 
         <div class="form-row">
           <div class="field">
-            <label for="f-tier" data-lang="kr">희망 등급</label>
-            <label for="f-tier" data-lang="en">Desired tier</label>
-            <select id="f-tier" name="tier">
-              <option value="Associate">Associate (일반)</option>
-              <option value="Corporate" selected>Corporate (기업)</option>
-              <option value="Founding">Founding (창립 · 초대제)</option>
+            <label data-lang="kr">희망 등급</label><label data-lang="en">Desired tier</label>
+            <select>
+              <option>Associate (일반)</option>
+              <option selected>Corporate (기업)</option>
+              <option>Founding (창립 · 초대제)</option>
             </select>
           </div>
           <div class="field">
-            <label for="f-area" data-lang="kr">주요 사업 영역</label>
-            <label for="f-area" data-lang="en">Business area</label>
-            <select id="f-area" name="area">
+            <label data-lang="kr">주요 사업 영역</label><label data-lang="en">Business area</label>
+            <select>
               <option>Foundation Model / LLM</option>
               <option>AI Silicon / 반도체</option>
               <option>Enterprise AI</option>
@@ -565,34 +415,14 @@
         </div>
 
         <div class="field">
-          <label for="f-intro" data-lang="kr">간단 소개</label>
-          <label for="f-intro" data-lang="en">Brief introduction</label>
-          <textarea id="f-intro" name="intro" maxlength="500" placeholder="회사와 가입 목적을 간단히 소개해 주세요."></textarea>
+          <label data-lang="kr">간단 소개</label><label data-lang="en">Brief introduction</label>
+          <textarea placeholder="회사와 가입 목적을 간단히 소개해 주세요."></textarea>
         </div>
-
-        <div class="field consent">
-          <label class="check">
-            <input type="checkbox" id="f-consent" name="consent" required />
-            <span>
-              <span data-lang="kr">개인정보 수집·이용에 동의합니다. (회원 심사 목적)</span>
-              <span data-lang="en">I consent to the collection and use of personal data for membership review.</span>
-            </span>
-          </label>
-          <span class="field-error" data-error-for="consent"></span>
-        </div>
-
-        <div class="form-alert" data-form-alert hidden></div>
 
         <div class="actions">
-          <button class="btn btn-accent" type="submit" data-submit-btn>
-            <span class="btn-label">
-              <span data-lang="kr">가입 신청 제출</span><span data-lang="en">Submit application</span>
-            </span>
+          <button class="btn btn-accent" type="submit">
+            <span data-lang="kr">가입 신청 제출</span><span data-lang="en">Submit application</span>
             <svg class="arr" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-            <svg class="spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" hidden>
-              <circle cx="12" cy="12" r="9" stroke-opacity="0.25"/>
-              <path d="M21 12a9 9 0 00-9-9"/>
-            </svg>
           </button>
           <span class="note" data-lang="kr">* 개인정보는 회원 심사 목적으로만 사용됩니다.</span>
           <span class="note" data-lang="en">* Data used only for membership review.</span>
@@ -674,160 +504,5 @@
 </div>
 
 <script src="assets/app.js"></script>
-<script>
-/* ==== Join form logic ==== */
-(function () {
-  const form = document.getElementById('join-form');
-  if (!form) return;
-
-  const submitBtn = form.querySelector('[data-submit-btn]');
-  const alertEl = form.querySelector('[data-form-alert]');
-  const banner = document.querySelector('[data-signed-in-banner]');
-
-  function isEnglish() { return document.body.classList.contains('lang-en'); }
-  function t(kr, en) { return isEnglish() ? en : kr; }
-
-  const MESSAGES = {
-    required: ['필수 입력 항목입니다.', 'This field is required.'],
-    minLen:   ['조금 더 자세히 입력해 주세요.', 'A bit more detail, please.'],
-    email:    ['올바른 이메일 형식이 아닙니다.', 'Please enter a valid email address.'],
-    bizNo:    ['형식: 123-45-67890', 'Format: 123-45-67890'],
-    consent:  ['동의가 필요합니다.', 'Consent is required.'],
-    duplicate:['이미 같은 회사·이메일로 접수된 신청이 있습니다.', 'A prior application exists for this company and email.'],
-  };
-
-  function setFieldError(name, msg) {
-    const errEl = form.querySelector(`[data-error-for="${name}"]`);
-    if (!errEl) return;
-    const wrap = errEl.closest('.field');
-    if (msg) {
-      wrap.classList.add('has-error');
-      errEl.textContent = msg;
-    } else {
-      wrap.classList.remove('has-error');
-      errEl.textContent = '';
-    }
-  }
-
-  function clearErrors() {
-    form.querySelectorAll('.field.has-error').forEach((f) => f.classList.remove('has-error'));
-    form.querySelectorAll('.field-error').forEach((e) => (e.textContent = ''));
-    if (alertEl) { alertEl.hidden = true; alertEl.textContent = ''; alertEl.classList.remove('success'); }
-  }
-
-  function validate(data) {
-    const errors = {};
-    if (!data.company || data.company.length < 2) {
-      errors.company = data.company ? t(...MESSAGES.minLen) : t(...MESSAGES.required);
-    }
-    if (data.bizNo && !/^\d{3}-\d{2}-\d{5}$/.test(data.bizNo)) {
-      errors.bizNo = t(...MESSAGES.bizNo);
-    }
-    if (!data.contactName || data.contactName.length < 2) {
-      errors.contactName = data.contactName ? t(...MESSAGES.minLen) : t(...MESSAGES.required);
-    }
-    if (!data.email) {
-      errors.email = t(...MESSAGES.required);
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email)) {
-      errors.email = t(...MESSAGES.email);
-    }
-    if (!data.consent) {
-      errors.consent = t(...MESSAGES.consent);
-    }
-    return errors;
-  }
-
-  function showTopAlert(msg, opts = {}) {
-    if (!alertEl) return;
-    alertEl.textContent = msg;
-    alertEl.hidden = false;
-    alertEl.classList.toggle('success', !!opts.success);
-  }
-
-  function setLoading(loading) {
-    if (!submitBtn) return;
-    submitBtn.disabled = loading;
-    const label = submitBtn.querySelector('.btn-label');
-    const arr = submitBtn.querySelector('.arr');
-    const spinner = submitBtn.querySelector('.spinner');
-    if (label) label.style.opacity = loading ? '0.7' : '1';
-    if (arr) arr.hidden = loading;
-    if (spinner) spinner.hidden = !loading;
-  }
-
-  /* Live validation: clear error as user types */
-  form.addEventListener('input', (e) => {
-    const name = e.target.name;
-    if (name) setFieldError(name, '');
-  });
-
-  /* Submit */
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    clearErrors();
-
-    const fd = new FormData(form);
-    const data = {
-      company:     (fd.get('company') || '').trim(),
-      bizNo:       (fd.get('bizNo') || '').trim(),
-      contactName: (fd.get('contactName') || '').trim(),
-      role:        (fd.get('role') || '').trim(),
-      email:       (fd.get('email') || '').trim(),
-      phone:       (fd.get('phone') || '').trim(),
-      tier:        fd.get('tier') || 'Corporate',
-      area:        fd.get('area') || '',
-      intro:       (fd.get('intro') || '').trim(),
-      consent:     fd.get('consent') === 'on',
-    };
-
-    const errors = validate(data);
-    if (Object.keys(errors).length) {
-      Object.entries(errors).forEach(([k, v]) => setFieldError(k, v));
-      const firstBadField = form.querySelector('.field.has-error input, .field.has-error select, .field.has-error textarea');
-      if (firstBadField) firstBadField.focus();
-      showTopAlert(t(
-        '입력을 확인한 뒤 다시 시도해 주세요.',
-        'Please review the highlighted fields and try again.'
-      ));
-      return;
-    }
-
-    setLoading(true);
-    // Simulate network latency for realism
-    setTimeout(() => {
-      try {
-        const record = window.AICIA.register(data);
-        // Redirect to completion page
-        window.location.href = `join_complete.html?no=${encodeURIComponent(record.applicationNo)}`;
-      } catch (err) {
-        setLoading(false);
-        if (err.code === 'duplicate') {
-          showTopAlert(t(...MESSAGES.duplicate));
-        } else {
-          showTopAlert(t(
-            '오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
-            'Something went wrong. Please try again.'
-          ));
-        }
-      }
-    }, 700);
-  });
-
-  /* If already applied, show banner and pre-fill form */
-  const existing = window.AICIA.currentMember();
-  if (existing && banner) {
-    banner.hidden = false;
-    banner.querySelector('[data-signed-in-app-no]').textContent = existing.applicationNo;
-    banner.querySelector('[data-signed-in-company]').textContent = existing.company;
-    // Pre-fill fields (read-only feel — but leave editable in case of re-application)
-    ['company','bizNo','contactName','role','email','phone','intro'].forEach((k) => {
-      const f = form.elements[k];
-      if (f && existing[k]) f.value = existing[k];
-    });
-    if (form.elements.tier && existing.tier) form.elements.tier.value = existing.tier;
-    if (form.elements.area && existing.area) form.elements.area.value = existing.area;
-  }
-})();
-</script>
 </body>
 </html>

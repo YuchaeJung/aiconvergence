@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>협회소개 — AICIA</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&family=Noto+Serif+KR:wght@500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/styles.css" />
+
+<style>
+  .about-mission {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .about-mission h2 { font-size: clamp(32px, 3.6vw, 48px); }
+  .mission-blocks { display: flex; flex-direction: column; gap: 32px; }
+  .mission-block { padding: 28px 0; border-top: 1px solid var(--line); }
+  .mission-block h3 { font-size: 20px; margin-bottom: 10px; }
+  .mission-block p { font-size: 15.5px; color: var(--ink-3); line-height: 1.6; }
+  .mission-block .n {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .greeting {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 60px;
+    align-items: start;
+    padding: 80px 0;
+    border-top: 1px solid var(--line);
+  }
+  .greeting .portrait {
+    aspect-ratio: 3/4;
+    background: linear-gradient(135deg, #d5deee, #eef1f6);
+    border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+  }
+  .greeting .portrait::after {
+    content: "회장 사진";
+    position: absolute; inset: 0;
+    display: grid; place-items: center;
+    color: var(--ink-4);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  body.lang-en .greeting .portrait::after { content: "Chair portrait"; }
+  .greeting .content .name { margin-top: 32px; font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; }
+  .greeting .content .who { font-size: 22px; font-weight: 600; margin-top: 6px; letter-spacing: -0.02em; }
+  .greeting blockquote {
+    margin: 0;
+    font-size: clamp(22px, 2.2vw, 30px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .greeting p.detail { margin-top: 24px; color: var(--ink-3); font-size: 16px; line-height: 1.7; }
+
+  .history {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 60px;
+  }
+  .history-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 32px;
+    padding: 24px 0;
+    border-top: 1px solid var(--line);
+  }
+  .history-item:last-child { border-bottom: 1px solid var(--line); }
+  .history-item .yr {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .history-item ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+  .history-item li { font-size: 15px; color: var(--ink-2); line-height: 1.55; padding-left: 20px; position: relative; }
+  .history-item li::before {
+    content: ""; position: absolute; left: 0; top: 10px;
+    width: 6px; height: 6px; border-radius: 999px; background: var(--accent);
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .board-member {
+    padding: 28px 24px;
+    background: var(--bg-soft);
+    border-radius: var(--radius);
+  }
+  .board-member .role { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); }
+  .board-member .nm { margin-top: 12px; font-size: 20px; font-weight: 600; letter-spacing: -0.02em; }
+  .board-member .aff { margin-top: 4px; font-size: 14px; color: var(--ink-3); }
+
+  @media (max-width: 960px) {
+    .about-mission, .greeting, .history { grid-template-columns: 1fr; gap: 40px; }
+    .board { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<script>
+  window.__TWEAK_DEFAULTS__ = /*EDITMODE-BEGIN*/{
+    "palette": "blue",
+    "font": "pretendard"
+  }/*EDITMODE-END*/;
+</script>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="AICIA Homepage.html">
+      <span class="brand-mark">AI</span>
+      <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+      <span class="brand-name-en" data-lang="kr">AICIA</span>
+    </a>
+    <div class="nav-menu">
+      <a href="about.html" class="active"><span data-lang="kr">협회소개</span><span data-lang="en">About</span></a>
+      <a href="AICIA Homepage.html#business"><span data-lang="kr">사업분야</span><span data-lang="en">Business</span></a>
+      <a href="AICIA Homepage.html#members"><span data-lang="kr">회원사</span><span data-lang="en">Members</span></a>
+      <a href="insights.html"><span data-lang="kr">인사이트</span><span data-lang="en">Insights</span></a>
+      <a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a>
+      <a href="AICIA Homepage.html#news"><span data-lang="kr">뉴스</span><span data-lang="en">News</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-set-lang="kr" class="active">KR</button>
+        <button data-set-lang="en">EN</button>
+      </div>
+      <a href="join.html" class="btn btn-primary btn-sm">
+        <span data-lang="kr">회원가입</span><span data-lang="en">Join</span>
+        <svg class="arr" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section class="subhero">
+  <div class="container">
+    <div class="eyebrow">About AICIA</div>
+    <h1 data-lang="kr">AI를 산업의 언어로<br/>번역하는 협회.</h1>
+    <h1 data-lang="en">The association that turns AI<br/>into industry.</h1>
+    <p class="lead" data-lang="kr">
+      AI융합산업협회(AICIA)는 대한민국의 AI 기업·연구기관·정부가 모여
+      만드는 산업 협의체입니다. 우리는 정책, 표준, 파트너십, 인재의 축에서
+      AI가 실제 산업 성과가 되는 길을 만듭니다.
+    </p>
+    <p class="lead" data-lang="en">
+      AICIA is where Korea's AI companies, research institutes, and government
+      meet. We work along four axes — policy, standards, partnerships, and
+      talent — so AI becomes actual industry.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="about-mission">
+      <div class="section-title">
+        <div class="eyebrow">Mission</div>
+        <h2 style="margin-top:20px;" data-lang="kr">우리가 하는 일</h2>
+        <h2 style="margin-top:20px;" data-lang="en">What we do</h2>
+      </div>
+      <div class="mission-blocks">
+        <div class="mission-block">
+          <span class="n">01 · POLICY</span>
+          <h3 data-lang="kr">정책 · 규제 대응</h3><h3 data-lang="en">Policy & regulation</h3>
+          <p data-lang="kr">AI기본법, 개인정보, 저작권 등 산업 전반에 영향을 미치는 법제도에 회원사 목소리를 담아 정부·국회에 전달합니다.</p>
+          <p data-lang="en">We channel industry voice into legislation on the AI Framework Act, privacy, and copyright.</p>
+        </div>
+        <div class="mission-block">
+          <span class="n">02 · STANDARDS</span>
+          <h3 data-lang="kr">표준 · 안전 · 거버넌스</h3><h3 data-lang="en">Standards & safety</h3>
+          <p data-lang="kr">국내외 표준화 협의체(ISO/IEC, TTA)에 참여하며, AI 안전 평가와 거버넌스 지침을 산업 관점에서 제안합니다.</p>
+          <p data-lang="en">We contribute to ISO/IEC and TTA, and propose industry-informed AI safety and governance frameworks.</p>
+        </div>
+        <div class="mission-block">
+          <span class="n">03 · PARTNERSHIP</span>
+          <h3 data-lang="kr">파트너십 · 사업화</h3><h3 data-lang="en">Partnerships</h3>
+          <p data-lang="kr">회원사 간 기술 매칭, 대·중소기업 협력 프로젝트, 정부 지원 사업 연계로 R&D를 매출로 만듭니다.</p>
+          <p data-lang="en">Matchmaking, JV projects, and public program connections that turn R&D into revenue.</p>
+        </div>
+        <div class="mission-block">
+          <span class="n">04 · TALENT</span>
+          <h3 data-lang="kr">인재 · 커뮤니티</h3><h3 data-lang="en">Talent & community</h3>
+          <p data-lang="kr">현장형 교육과정, 조찬포럼, 산·학 네트워크로 AI 인재의 흐름을 만듭니다.</p>
+          <p data-lang="en">Applied curricula, breakfast forums, and industry-academia networks that keep AI talent flowing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);">
+  <div class="container">
+    <div class="greeting" style="border-top:0; padding: 100px 0;">
+      <div class="portrait"></div>
+      <div class="content">
+        <div class="eyebrow" data-lang="kr">회장 인사말</div>
+        <div class="eyebrow" data-lang="en">Chair's greeting</div>
+        <blockquote style="margin-top:24px;" data-lang="kr">
+          "AI는 이제 기술의 문제가 아니라, 산업이 스스로를 재정의하는
+          방식입니다. AICIA는 회원사 하나하나의 실전에서 얻은 지식을
+          정책과 표준으로, 다시 시장의 기회로 바꿉니다."
+        </blockquote>
+        <blockquote style="margin-top:24px;" data-lang="en">
+          "AI is no longer a technology question — it's how industries
+          redefine themselves. AICIA turns the ground-truth of our members
+          into policy, standards, and market opportunity."
+        </blockquote>
+        <p class="detail" data-lang="kr">
+          2017년 창립 이래 AICIA는 312개 회원사와 함께 5개년 산업 로드맵, 8건의
+          국가 표준안, 200회 이상의 조찬포럼을 만들어 왔습니다. 지금 우리에게
+          필요한 것은 더 많은 참여가 아니라, 더 깊은 협력입니다.
+        </p>
+        <p class="detail" data-lang="en">
+          Since 2017, AICIA and its 312 members have produced a 5-year industry
+          roadmap, eight national standards proposals, and 200+ breakfast
+          forums. What we need next isn't more participation — it's deeper
+          collaboration.
+        </p>
+        <div class="name">Chair</div>
+        <div class="who" data-lang="kr">김선우 · AICIA 회장 (한국AI연구원 원장)</div>
+        <div class="who" data-lang="en">Sunwoo Kim · Chair, AICIA (Director, KAIR)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="history">
+  <div class="container">
+    <div class="history">
+      <div class="section-title" style="position:sticky; top:100px; align-self:start;">
+        <div class="eyebrow">History</div>
+        <h2 style="margin-top:20px;" data-lang="kr">2017년부터,<br/>산업과 함께.</h2>
+        <h2 style="margin-top:20px;" data-lang="en">With industry<br/>since 2017.</h2>
+        <p class="lead" style="margin-top:24px;" data-lang="kr">협회의 발자취는 대한민국 AI 산업의 발자취와 겹칩니다.</p>
+        <p class="lead" style="margin-top:24px;" data-lang="en">Our timeline traces Korea's AI industry itself.</p>
+      </div>
+      <div>
+        <div class="history-item">
+          <div class="yr">2026</div>
+          <ul>
+            <li data-lang="kr">회원사 312개 돌파, AI+X Top 100 4기 선정</li>
+            <li data-lang="en">312 members; AI+X Top 100 (4th cohort) selected</li>
+            <li data-lang="kr">AI 안전·거버넌스 워킹그룹 상설화</li>
+            <li data-lang="en">AI Safety & Governance WG made permanent</li>
+          </ul>
+        </div>
+        <div class="history-item">
+          <div class="yr">2024</div>
+          <ul>
+            <li data-lang="kr">AI기본법 산업계 공청회 주관, 회원사 47곳 공동 서명</li>
+            <li data-lang="en">Co-hosted AI Framework Act industry hearing (47 co-signers)</li>
+            <li data-lang="kr">한·일·아세안 AI 협력 MOU 3건</li>
+            <li data-lang="en">Three MOUs with Japan and ASEAN AI bodies</li>
+          </ul>
+        </div>
+        <div class="history-item">
+          <div class="yr">2022</div>
+          <ul>
+            <li data-lang="kr">AI+X Top 100 프로그램 시작</li>
+            <li data-lang="en">Launched AI+X Top 100 program</li>
+            <li data-lang="kr">TTA 공동 AI 평가체계 v1 발표</li>
+            <li data-lang="en">Released AI evaluation framework v1 with TTA</li>
+          </ul>
+        </div>
+        <div class="history-item">
+          <div class="yr">2019</div>
+          <ul>
+            <li data-lang="kr">AIIA 조찬포럼 정기화, 첫 산업 지형도 발간</li>
+            <li data-lang="en">Regular AIIA breakfast forums; first industry map</li>
+          </ul>
+        </div>
+        <div class="history-item">
+          <div class="yr">2017</div>
+          <ul>
+            <li data-lang="kr">과학기술정보통신부 인가, 창립 회원사 42곳</li>
+            <li data-lang="en">Founded with MSIT approval; 42 founding members</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="board" style="background:var(--bg-soft); border-top: 1px solid var(--line);">
+  <div class="container">
+    <div class="sec-head">
+      <div class="section-title">
+        <div class="eyebrow">Board</div>
+        <h2 style="margin-top:20px;" data-lang="kr">임원진</h2>
+        <h2 style="margin-top:20px;" data-lang="en">Board members</h2>
+      </div>
+    </div>
+    <div class="board">
+      <div class="board-member">
+        <div class="role">Chair</div>
+        <div class="nm" data-lang="kr">김선우</div><div class="nm" data-lang="en">Sunwoo Kim</div>
+        <div class="aff" data-lang="kr">한국AI연구원 원장</div>
+        <div class="aff" data-lang="en">Director, KAIR</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Vice Chair</div>
+        <div class="nm" data-lang="kr">박정민</div><div class="nm" data-lang="en">Jeongmin Park</div>
+        <div class="aff" data-lang="kr">삼성SDS AI 부문 부사장</div>
+        <div class="aff" data-lang="en">EVP, Samsung SDS AI</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Vice Chair</div>
+        <div class="nm" data-lang="kr">이하늘</div><div class="nm" data-lang="en">Haneul Lee</div>
+        <div class="aff" data-lang="kr">네이버클라우드 하이퍼스케일 AI 총괄</div>
+        <div class="aff" data-lang="en">Head of Hyperscale AI, NAVER Cloud</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Director</div>
+        <div class="nm" data-lang="kr">최민석</div><div class="nm" data-lang="en">Minseok Choi</div>
+        <div class="aff" data-lang="kr">Upstage 공동창업자</div>
+        <div class="aff" data-lang="en">Co-founder, Upstage</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Director</div>
+        <div class="nm" data-lang="kr">한지은</div><div class="nm" data-lang="en">Jieun Han</div>
+        <div class="aff" data-lang="kr">Rebellions COO</div>
+        <div class="aff" data-lang="en">COO, Rebellions</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Director</div>
+        <div class="nm" data-lang="kr">정우재</div><div class="nm" data-lang="en">Woojae Jung</div>
+        <div class="aff" data-lang="kr">KAIST 전산학부 교수</div>
+        <div class="aff" data-lang="en">Prof., KAIST CS</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Auditor</div>
+        <div class="nm" data-lang="kr">서혜림</div><div class="nm" data-lang="en">Hyerim Seo</div>
+        <div class="aff" data-lang="kr">법무법인 세경 파트너</div>
+        <div class="aff" data-lang="en">Partner, Sekyung Law</div>
+      </div>
+      <div class="board-member">
+        <div class="role">Secretary General</div>
+        <div class="nm" data-lang="kr">문지호</div><div class="nm" data-lang="en">Jiho Moon</div>
+        <div class="aff" data-lang="kr">AICIA 사무국</div>
+        <div class="aff" data-lang="en">AICIA Secretariat</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-banner">
+  <div class="glow"></div>
+  <div class="container inner">
+    <div>
+      <div class="eyebrow" style="color:color-mix(in oklch, var(--accent) 90%, white 10%);">Get involved</div>
+      <h2 style="margin-top:20px;" data-lang="kr">협력할 준비가 되셨나요?</h2>
+      <h2 style="margin-top:20px;" data-lang="en">Ready to collaborate?</h2>
+      <p data-lang="kr">회원사 가입, 협력 프로그램, 정책 파트너십 등 언제든 문의 주세요.</p>
+      <p data-lang="en">Membership, joint programs, policy partnerships — get in touch.</p>
+    </div>
+    <div class="btns">
+      <a href="join.html" class="btn btn-primary">
+        <span data-lang="kr">회원사 가입</span><span data-lang="en">Join AICIA</span>
+      </a>
+      <a href="mailto:hello@aicia.or.kr" class="btn btn-outline">
+        <span data-lang="kr">이메일 문의</span><span data-lang="en">Contact us</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand">
+          <span class="brand-mark">AI</span>
+          <span data-lang="kr">AI융합산업협회</span><span data-lang="en">AICIA</span>
+        </div>
+        <p data-lang="kr">AI융합산업협회(AICIA)는 대한민국의 인공지능 산업을 대표하는 비영리 산업 단체입니다.</p>
+        <p data-lang="en">AICIA is the non-profit trade association representing Korea's AI industry.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Association</h5>
+        <ul>
+          <li><a href="about.html"><span data-lang="kr">협회 소개</span><span data-lang="en">About</span></a></li>
+          <li><a href="about.html#history"><span data-lang="kr">연혁</span><span data-lang="en">History</span></a></li>
+          <li><a href="about.html#board"><span data-lang="kr">임원진</span><span data-lang="en">Board</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="AICIA Homepage.html#business"><span data-lang="kr">사업 분야</span><span data-lang="en">Business</span></a></li>
+          <li><a href="AICIA Homepage.html#events"><span data-lang="kr">행사</span><span data-lang="en">Events</span></a></li>
+          <li><a href="insights.html"><span data-lang="kr">리포트</span><span data-lang="en">Reports</span></a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li>서울특별시 서초구 태봉로 108</li>
+          <li>서울 AI 허브 4층 405호</li>
+          <li>+82 2 6265 8750</li>
+          <li>hello@aicia.or.kr</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2017–2026 AI융합산업협회 · AICIA</div>
+      <div style="display:flex;gap:20px;">
+        <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<button class="tweaks-btn">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>
+  Tweaks
+</button>
+<div class="tweaks-panel">
+  <button class="close">✕</button>
+  <h5>Tweaks</h5>
+  <div class="sub">컬러 팔레트와 폰트를 조절해 보세요.</div>
+  <div class="row">
+    <div class="label">Color palette</div>
+    <div class="swatches">
+      <button class="swatch" data-tweak-palette="blue" style="background:#2563eb"></button>
+      <button class="swatch" data-tweak-palette="indigo" style="background:#4f46e5"></button>
+      <button class="swatch" data-tweak-palette="teal" style="background:#0d9488"></button>
+      <button class="swatch" data-tweak-palette="graphite" style="background:#334155"></button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="label">Typography</div>
+    <div class="fonts">
+      <button class="fchip" data-tweak-font="pretendard" style="font-family:'Pretendard',sans-serif">Pretendard · 모던 산세리프</button>
+      <button class="fchip" data-tweak-font="ibm" style="font-family:'IBM Plex Sans KR',sans-serif">IBM Plex · 테크니컬</button>
+      <button class="fchip" data-tweak-font="serif" style="font-family:'Noto Serif KR',serif">Noto Serif · 클래식</button>
+    </div>
+  </div>
+</div>
+
+<script src="assets/app.js"></script>
+</body>
+</html>
